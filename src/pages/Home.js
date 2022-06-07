@@ -1,8 +1,9 @@
 /*eslint-disable*/
 import React from 'react';
+import MainpageLayout from '../Components/MainpageLayout';
 
 const Home = () => {
-  return <div>You are at Home Page </div>;
+  return <MainpageLayout>You are at Home Page </MainpageLayout>;
 };
 
 export default Home;
