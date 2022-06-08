@@ -8,7 +8,7 @@ import Starred from './pages/Starred';
 
 function App() {
   return (
-    <switch>
+    <Switch>
       <Route exact path="/">
         <Home />
       </Route>
@@ -17,10 +17,10 @@ function App() {
         <Starred />
       </Route>
 
-      {/* <Route>
+      <Route>
         <div>Error 404, Page Not Found</div>
-      </Route> */}
-    </switch>
+      </Route>
+    </Switch>
   );
 }
 
