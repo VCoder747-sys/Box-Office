@@ -1,16 +1,22 @@
-/*eslint-disable */
+/* eslint-disable */
 import React, { useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiGet } from '../misc/config';
+import ShowMainData from '../Components/shows/ShowMainData';
+import Details from '../Components/shows/Details';
+import Seasons from '../Components/shows/Seasons';
+import Cast from '../Components/shows/Cast';
 
 const reducer = (prevState, action) => {
   switch (action.type) {
     case 'FETCH_SUCCESS': {
       return { isLoading: false, error: null, show: action.show };
     }
+
     case 'FETCH_FAILED': {
       return { ...prevState, isLoading: false, error: action.error };
     }
+
     default:
       return prevState;
   }
@@ -18,16 +24,12 @@ const reducer = (prevState, action) => {
 
 const initialState = {
   show: null,
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 
 const Show = () => {
   const { id } = useParams();
-
-  //   const [show, setShow] = useState(null);
-  //   const [isLoading, setIsLoading] = useState(true);
-  //   const [error, setError] = useState(null);
 
   const [{ show, isLoading, error }, dispatch] = useReducer(
     reducer,
@@ -36,7 +38,8 @@ const Show = () => {
 
   useEffect(() => {
     let isMounted = true;
-    apiGet(`shows/${id}?embed[]=season&embed[]=cast`)
+
+    apiGet(`/shows/${id}?embed[]=seasons&embed[]=cast`)
       .then(results => {
         if (isMounted) {
           dispatch({ type: 'FETCH_SUCCESS', show: results });
@@ -53,17 +56,44 @@ const Show = () => {
     };
   }, [id]);
 
-  console.log('show', show);
-
   if (isLoading) {
-    return <div>Date is being loaded</div>;
+    return <div>Data is being loaded</div>;
   }
 
   if (error) {
-    return <div>Error Occured: {error}</div>;
+    return <div>Error occured: {error}</div>;
   }
 
-  return <div>This is show page</div>;
+  return (
+    <div>
+      <ShowMainData
+        image={show.image}
+        name={show.name}
+        rating={show.rating}
+        summary={show.summary}
+        tags={show.genres}
+      />
+
+      <div>
+        <h2>Details</h2>
+        <Details
+          status={show.status}
+          network={show.network}
+          premiered={show.premiered}
+        />
+      </div>
+
+      <div>
+        <h2>Seasons</h2>
+        <Seasons seasons={show._embedded.seasons} />
+      </div>
+
+      <div>
+        <h2>Cast</h2>
+        <Cast cast={show._embedded.cast} />
+      </div>
+    </div>
+  );
 };
 
 export default Show;
