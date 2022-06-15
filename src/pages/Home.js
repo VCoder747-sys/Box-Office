@@ -1,10 +1,16 @@
 /*eslint-disable*/
 import React, { useState } from 'react';
 import ActorGrid from '../Components/actors/ActorGrid';
+import CustomRadio from '../Components/CustomRadio';
 import MainpageLayout from '../Components/MainpageLayout';
 import ShowGrid from '../Components/shows/ShowGrid';
 import { apiGet } from '../misc/config';
 import { useLastQuery } from '../misc/custom-hooks';
+import {
+  RadioInputsWrapper,
+  SearchButtonWrapper,
+  SearchInput,
+} from './Home.styled';
 
 const Home = () => {
   const [input, setInput] = useLastQuery();
@@ -53,39 +59,38 @@ const Home = () => {
   return (
     <MainpageLayout>
       {' '}
-      <input
+      <SearchInput
         type="text"
         onChange={onInputChange}
         placeholder="Search for Something"
         onKeyDown={onKeyDown}
         value={input}
       />{' '}
-      <div>
-        <label htmlFor="shows-search">
-          Shows
-          <input
+      <RadioInputsWrapper>
+        <div>
+          <CustomRadio
+            label="Shows"
             id="shows-search"
-            type="radio"
             value="shows"
             checked={isShowsSearch}
             onChange={onRadioChange}
           />
-        </label>
-
-        <label htmlFor="actors-search">
-          Actors
-          <input
-            id="actors-search"
-            type="radio"
+        </div>
+        <div>
+          <CustomRadio
+            label="Actors"
+            id="actorss-search"
             value="people"
             checked={!isShowsSearch}
             onChange={onRadioChange}
           />
-        </label>
-      </div>
-      <button type="button" onClick={onSearch}>
-        SEARCH
-      </button>
+        </div>
+      </RadioInputsWrapper>
+      <SearchButtonWrapper>
+        <button type="button" onClick={onSearch}>
+          SEARCH
+        </button>
+      </SearchButtonWrapper>
       {renderResults()}
     </MainpageLayout>
   );
