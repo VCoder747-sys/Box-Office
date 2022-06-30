@@ -88,7 +88,7 @@ const Home = () => {
       </RadioInputsWrapper>
       <SearchButtonWrapper>
         <button type="button" onClick={onSearch}>
-          SEARCH
+          SEARCH HERE
         </button>
       </SearchButtonWrapper>
       {renderResults()}
